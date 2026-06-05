@@ -1,0 +1,50 @@
+// Defining the PWM-capable pins
+const int RED_PIN = 11;
+const int YELLOW_PIN = 10;
+const int GREEN_PIN = 9;
+
+// How fast the lights fade (lower number = faster fade)
+const int FADE_SPEED = 4; 
+
+void setup() {
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(YELLOW_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+
+  // Start with Red fully ON
+  analogWrite(RED_PIN, 255);
+  analogWrite(YELLOW_PIN, 0);
+  analogWrite(GREEN_PIN, 0);
+}
+
+void loop() {
+  // 1. RED IS ON for 5 seconds
+  delay(5000);
+
+  // 2. TRANSITION: Red fades OUT, Green fades IN
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(RED_PIN, 255 - i); // Fades 255 down to 0
+    analogWrite(GREEN_PIN, i);     // Fades 0 up to 255
+    delay(FADE_SPEED);
+  }
+
+  // 3. GREEN IS ON for 5 seconds
+  delay(5000);
+
+  // 4. TRANSITION: Green fades OUT, Yellow fades IN
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(GREEN_PIN, 255 - i); // Fades Green down
+    analogWrite(YELLOW_PIN, i);    // Fades Yellow up
+    delay(FADE_SPEED);
+  }
+
+  // 5. YELLOW IS ON for 2 seconds
+  delay(2000);
+
+  // 6. TRANSITION: Yellow fades OUT, Red fades IN
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(YELLOW_PIN, 255 - i); // Fades Yellow down
+    analogWrite(RED_PIN, i);       // Fades Red back up
+    delay(FADE_SPEED);
+  }
+}
